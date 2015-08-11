@@ -8,6 +8,7 @@ import javax.swing.UIManager;
 
 import com.mj.gui.BRT.WindowEventHandler;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
@@ -38,12 +39,15 @@ public class Container extends JFrame {
 		this.add(panel);
 		
 		setVisible(true);
+		/*
 		SwingUtilities.updateComponentTreeUI(this);
 		try { 
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		*/
 
 		
 	}
@@ -77,6 +81,7 @@ public class Container extends JFrame {
 
 			lblInfo = new JLabel();
 			lblInfo.setBounds(70, 200, 358, 14);
+			lblInfo.setBackground(Color.BLUE);
 			add(lblInfo);
 
 			btnConnect = new JButton("SAVE ADRESS");

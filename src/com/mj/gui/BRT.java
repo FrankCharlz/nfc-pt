@@ -1,5 +1,6 @@
 package com.mj.gui;
 
+import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -45,25 +46,13 @@ public class BRT  {
 		gui.addWindowListener(new WindowEventHandler());
 	}
 
-	private void testConnection() {
-		long time = System.currentTimeMillis();
-		int i;
-		for (i=0; i<1; i++) {
-			station.push("abeoe70b");
-		}
-		System.out.println("Sent "+i+" uids in "+(System.currentTimeMillis() - time)+"ms");
-
-	}
+	
 
 	class Watcher extends FileWatcher { 
 		public void read(String path) {
-			String uid = readFile(path);
+			String uid = Utils.readFile(path);
 			String response = station.push(uid);
-			doEntrance(response);
-			//gui.dispInfo(uid + " : "+response);
-			gui.getLblInfo().setText(uid + " : "+response);
-
-
+			processResponse(uid, response);
 		}
 
 	}
@@ -81,65 +70,32 @@ public class BRT  {
 		}
 	}
 
-	public String readFile(String path) {
-		String result = null;
-		try {
-			result =  new String(Files.readAllBytes(Paths.get(path)));
-			result = result.substring(8,16);
-			System.out.println(result);
-		} catch (IOException e) {
-			e.printStackTrace();
-		};
-		return result;
-	}
-
-	public void doEntrance(String response) {
+	public void processResponse(String uid, String response) {
 		boolean shouldOpen = response.startsWith("OPEN");
+		gui.getLblInfo().setText(uid + " : "+response);
 		if (shouldOpen) {
-			openEntrance();
+			gui.getLblInfo().setBackground(Color.GREEN);
+			Utils.openEntrance();
+			gui.getLblUid().setBackground(Color.WHITE);
 		} else {
 			System.out.println("Should NOT open the entrance");
-			SoundHelper.beep();
+			Utils.beep();
 		}
 	}
-
-	private void openEntrance() {
-		String open_command = "nircmd cdrom open e:";
-		String close_command = "nircmd cdrom close e:";
-
-		Runtime rt = Runtime.getRuntime();
-
-		try {
-			rt.exec(open_command);
-			//sleep for a little
-			try {
-				Thread.sleep(3000);               
-			} catch(InterruptedException ex) {
-				Thread.currentThread().interrupt();
-			}
-			rt.exec(close_command);
-			System.out.println("Should open the entrance");
-		} catch (IOException e) {
-			e.printStackTrace();
+	
+	private void testConnection() {
+		long time = System.currentTimeMillis();
+		int i;
+		for (i=0; i<1; i++) {
+			station.push("abeoe70b");
 		}
+		System.out.println("Sent "+i+" uids in "+(System.currentTimeMillis() - time)+"ms");
 
 	}
+	
+	
 
-
-	private void playSound() {
-		try {
-			File f  = new File("data/audio/sound.wav");
-
-			Clip clip = AudioSystem.getClip();
-			AudioInputStream stream = AudioSystem.getAudioInputStream(f);
-
-			clip.open(stream);
-			clip.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
+	
 
 
 }

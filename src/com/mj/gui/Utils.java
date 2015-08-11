@@ -1,29 +1,70 @@
 package com.mj.gui;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
-public class SoundHelper {
-	
-	private static final float SAMPLE_RATE = 8000f;
-	
-	public static void beep() {
-		
+public class Utils {
+
+	private Utils() {}
+
+	public static void openEntrance() {
+		String open_command = "nircmd cdrom open e:";
+		String close_command = "nircmd cdrom close e:";
+
+		Runtime rt = Runtime.getRuntime();
 
 		try {
-			
+			rt.exec(open_command);
+			//sleep for a little
+			try {
+				Thread.sleep(3000);               
+			} catch(InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			}
+			rt.exec(close_command);
+			System.out.println("Should open the entrance");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+
+	public static String readFile(String path) {
+		String result = null;
+		try {
+			result =  new String(Files.readAllBytes(Paths.get(path)));
+			result = result.substring(8,16);
+			System.out.println(result);
+		} catch (IOException e) {
+			e.printStackTrace();
+		};
+		return result;
+	}
+
+	private static final float SAMPLE_RATE = 8000f;
+
+	public static void beep() {
+
+
+		try {
+
 			tone(41000,300, 1);Thread.sleep(200);
 			tone(9000,100, 1);Thread.sleep(200);
 			tone(1000,400, 1);
-			
+
 		} catch (LineUnavailableException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	private final static void tone(int hz, int msecs, double vol)
