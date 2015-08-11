@@ -19,8 +19,6 @@ public class StationClient {
 	private InputStream inFromServer;
 	private DataInputStream in;
 	
-	OnDataPass dataPasser;
-
 	public void init() {
 		try {
 			System.out.println("Trying to connect to "+Adress.IP+ " at "+Adress.PORT);
@@ -68,10 +66,6 @@ public class StationClient {
 
 	}
 	
-	public interface OnDataPass {
-	    public void onDataPass(String data);
-	}
-
 	public void close() {
 		try {
 			if (socket != null)

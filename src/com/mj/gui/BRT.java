@@ -1,24 +1,18 @@
 package com.mj.gui;
 
-import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-
-import com.mj.gui.StationClient.OnDataPass;
 
 
-public class MainGUI  {
+public class BRT  {
 
 	private static StationClient station;
 	private FileWatcher fileWatcher;
@@ -27,16 +21,12 @@ public class MainGUI  {
 
 	public static void main(String[] args) {
 
-		MainGUI window = new MainGUI();
+		BRT window = new BRT();
 
 	}
 
 	//constructor
-	public MainGUI() {
-		gui = new Container();
-		
-		//openEntrance();
-		playSound();
+	public BRT() {
 
 		//starting file watcher in new thread
 		fileWatcherThread = new Thread(new Runnable() {
@@ -47,11 +37,12 @@ public class MainGUI  {
 				fileWatcher.init();
 			}
 		});
-		
-		fileWatcherThread.start();
 
-		
+		fileWatcherThread.start();
 		station = new StationClient();
+		gui = new Container();
+
+		gui.addWindowListener(new WindowEventHandler());
 	}
 
 	private void testConnection() {
@@ -62,7 +53,6 @@ public class MainGUI  {
 		}
 		System.out.println("Sent "+i+" uids in "+(System.currentTimeMillis() - time)+"ms");
 
-
 	}
 
 	class Watcher extends FileWatcher { 
@@ -72,8 +62,8 @@ public class MainGUI  {
 			doEntrance(response);
 			//gui.dispInfo(uid + " : "+response);
 			gui.getLblInfo().setText(uid + " : "+response);
-			
-			
+
+
 		}
 
 	}
@@ -106,8 +96,9 @@ public class MainGUI  {
 	public void doEntrance(String response) {
 		boolean shouldOpen = response.startsWith("OPEN");
 		if (shouldOpen) {
-			System.out.println("Should open the entrance");
 			openEntrance();
+		} else {
+			System.out.println("Should NOT open the entrance");
 		}
 	}
 
@@ -136,14 +127,15 @@ public class MainGUI  {
 
 	private void playSound() {
 		try {
+			File f  = new File("data/audio/sound.wav");
+
 			Clip clip = AudioSystem.getClip();
-			AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-					MainGUI.class.getResourceAsStream("/data/audio/sound.wav"));
-			clip.open(inputStream);
-			clip.start(); 
+			AudioInputStream stream = AudioSystem.getAudioInputStream(f);
+
+			clip.open(stream);
+			clip.start();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.err.println(e.getMessage());
 		}
 
 	}

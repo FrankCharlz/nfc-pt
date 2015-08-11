@@ -6,7 +6,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import com.mj.gui.MainGUI.WindowEventHandler;
+import com.mj.gui.BRT.WindowEventHandler;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
