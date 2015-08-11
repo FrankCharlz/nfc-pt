@@ -99,6 +99,7 @@ public class BRT  {
 			openEntrance();
 		} else {
 			System.out.println("Should NOT open the entrance");
+			SoundHelper.beep();
 		}
 	}
 
