@@ -51,8 +51,8 @@ public class StationClient {
 			out.flush();
 
 			//notify:
-			System.out.println("\n--------------\nMessage sent");
-			System.out.println("Waiting for response...\n---------------");
+			System.out.println("\nMessage sent......................");
+			System.out.println("Waiting for response................\n");
 
 			//recievibg response
 			response = in.readUTF();

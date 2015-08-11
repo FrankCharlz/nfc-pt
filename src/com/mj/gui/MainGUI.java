@@ -9,6 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -18,13 +20,10 @@ import com.mj.gui.StationClient.OnDataPass;
 
 public class MainGUI  {
 
-	private JFrame frame;
-	private Container container;
-
-
 	private static StationClient station;
 	private FileWatcher fileWatcher;
 	private Thread fileWatcherThread;
+	private Container gui;
 
 	public static void main(String[] args) {
 
@@ -34,8 +33,10 @@ public class MainGUI  {
 
 	//constructor
 	public MainGUI() {
-		makeGUIThings();
+		gui = new Container();
+		
 		//openEntrance();
+		playSound();
 
 		//starting file watcher in new thread
 		fileWatcherThread = new Thread(new Runnable() {
@@ -46,36 +47,12 @@ public class MainGUI  {
 				fileWatcher.init();
 			}
 		});
+		
 		fileWatcherThread.start();
 
-		long time = System.currentTimeMillis();
+		
 		station = new StationClient();
-		//testConnection();
-		System.out.println("Time: "+(System.currentTimeMillis() - time)+"ms");
-
-
 	}
-
-	private void makeGUIThings() {
-		frame = new JFrame("BRT");
-		//SwingUtilities.updateComponentTreeUI(frame);
-		frame.setSize(600, 400);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.addWindowListener(new WindowEventHandler());
-
-		container = new Container();
-
-		frame.add(container);
-		frame.setVisible(true);
-		SwingUtilities.updateComponentTreeUI(frame);
-		try { 
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
 
 	private void testConnection() {
 		long time = System.currentTimeMillis();
@@ -93,7 +70,10 @@ public class MainGUI  {
 			String uid = readFile(path);
 			String response = station.push(uid);
 			doEntrance(response);
-			container.dispInfo(uid + " : "+response);
+			//gui.dispInfo(uid + " : "+response);
+			gui.getLblInfo().setText(uid + " : "+response);
+			
+			
 		}
 
 	}
@@ -153,6 +133,20 @@ public class MainGUI  {
 
 	}
 
+
+	private void playSound() {
+		try {
+			Clip clip = AudioSystem.getClip();
+			AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+					MainGUI.class.getResourceAsStream("/data/audio/sound.wav"));
+			clip.open(inputStream);
+			clip.start(); 
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println(e.getMessage());
+		}
+
+	}
 
 
 }
