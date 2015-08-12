@@ -26,6 +26,7 @@ public class View extends JPanel {
 		add(lblIp);
 		
 		txtIP = new JTextField();
+		txtIP.setFont(new Font("Consolas", Font.PLAIN, 13));
 		txtIP.setBounds(88, 39, 198, 20);
 		add(txtIP);
 		txtIP.setColumns(10);
@@ -36,6 +37,7 @@ public class View extends JPanel {
 		add(lblPort);
 		
 		txtPort = new JTextField();
+		txtPort.setFont(new Font("Consolas", Font.PLAIN, 13));
 		txtPort.setBounds(88, 75, 198, 20);
 		add(txtPort);
 		txtPort.setColumns(10);
@@ -57,6 +59,7 @@ public class View extends JPanel {
 		add(btnSaveAddress);
 		
 		txtDisplay = new JTextPane();
+		txtDisplay.setFont(new Font("Consolas", txtDisplay.getFont().getStyle(), txtDisplay.getFont().getSize() + 3));
 		txtDisplay.setBackground(new Color(230, 230, 250));
 		txtDisplay.setBounds(336, 42, 187, 85);
 		add(txtDisplay);

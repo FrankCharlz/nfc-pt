@@ -94,7 +94,7 @@ public class Utils {
 	}
 
 	public static String getWorkingDirectory() {
-		String path = "C:\\ProgramData\\brt\\data\\";
+		String path = BRT.PROJECT_DATA_FOLDER;
 
 		String ins = "COPY THE PATH BELOW AND INTEGRATE IT IN GOTOTAGS APP:"+System.lineSeparator();
 		//URL location = Utils.class.getProtectionDomain().getCodeSource().getLocation();

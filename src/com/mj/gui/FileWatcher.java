@@ -13,7 +13,7 @@ import java.nio.file.WatchService;
 
 public abstract class FileWatcher {
 
-	private static final String DIRECTORY = "data/";
+	private static final String DIRECTORY = BRT.PROJECT_DATA_FOLDER;
 	private static WatchService watcher;
 
 	

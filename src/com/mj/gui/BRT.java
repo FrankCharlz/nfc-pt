@@ -12,6 +12,7 @@ import javax.swing.UIManager;
 
 public class BRT  {
 
+	public static final String PROJECT_DATA_FOLDER = "C:\\ProgramData\\brt\\data\\";
 	private static StationClient station;
 	private FileWatcher fileWatcher;
 	private Thread fileWatcherThread;
