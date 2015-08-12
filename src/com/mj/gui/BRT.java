@@ -1,16 +1,13 @@
 package com.mj.gui;
 
-import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 
 public class BRT  {
@@ -18,10 +15,10 @@ public class BRT  {
 	private static StationClient station;
 	private FileWatcher fileWatcher;
 	private Thread fileWatcherThread;
-	private Container gui;
+	private View view;
 
 	public static void main(String[] args) {
-
+		Utils.updateAdress();
 		BRT window = new BRT();
 
 	}
@@ -41,11 +38,30 @@ public class BRT  {
 
 		fileWatcherThread.start();
 		station = new StationClient();
-		gui = new Container();
-
-		gui.addWindowListener(new WindowEventHandler());
+		
+		view = new View();
+		view.getTxtIP().setText(Adress.IP);
+		view.getTxtPort().setText(Adress.PORT+"");
+		view.getTxtPath().setText(Utils.getWorkingDirectory());
+		view.getBtnSaveAddress().addActionListener(new ButtonClicks());
+		
+		JFrame frame = new JFrame("BRT");
+		//frame.setLayout(new FlowLayout());
+		frame.setSize(600, 400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.addWindowListener(new WindowEventHandler());
+		frame.add(view);
+		frame.addWindowListener(new WindowEventHandler());
+		frame.setVisible(true);
+		
+		SwingUtilities.updateComponentTreeUI(frame);
+		try { 
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
-
 	
 
 	class Watcher extends FileWatcher { 
@@ -55,6 +71,22 @@ public class BRT  {
 			processResponse(uid, response);
 		}
 
+	}
+	
+	class ButtonClicks implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try {
+				Adress.IP = view.getTxtIP().getText();
+				Adress.PORT = Integer.parseInt(view.getTxtPort().getText());
+				view.getTxtDisplay().setText("Server at: "+Adress.getAdress());
+
+			} catch (NumberFormatException err) {
+				err.printStackTrace();
+			}
+		}
+		
 	}
 
 	class WindowEventHandler extends WindowAdapter {
@@ -72,11 +104,9 @@ public class BRT  {
 
 	public void processResponse(String uid, String response) {
 		boolean shouldOpen = response.startsWith("OPEN");
-		gui.getLblInfo().setText(uid + " : "+response);
+		view.getTxtDisplay().setText(uid + " : "+response);
 		if (shouldOpen) {
-			gui.getLblInfo().setBackground(Color.GREEN);
 			Utils.openEntrance();
-			gui.getLblUid().setBackground(Color.WHITE);
 		} else {
 			System.out.println("Should NOT open the entrance");
 			Utils.beep();

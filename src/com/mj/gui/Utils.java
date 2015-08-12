@@ -1,6 +1,8 @@
 package com.mj.gui;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -89,6 +91,36 @@ public class Utils {
 		sdl.drain();
 		sdl.stop();
 		sdl.close();
+	}
+
+	public static String getWorkingDirectory() {
+		String path = "C:\\ProgramData\\brt\\data\\";
+
+		String ins = "COPY THE PATH BELOW AND INTEGRATE IT IN GOTOTAGS APP:"+System.lineSeparator();
+		//URL location = Utils.class.getProtectionDomain().getCodeSource().getLocation();
+
+		File file_path = new File(path);
+		if (!file_path.exists()) {
+			file_path.mkdirs();
+		}
+
+		File result_file = new File(path+"result.txt");
+		if (result_file.exists()) {
+			return result_file.getAbsolutePath();
+		}
+		boolean success = false;
+		try {
+			success = result_file.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return (success) ? result_file.getAbsolutePath() : "Result file could not be created plz restart";
+	}
+
+	public static void updateAdress() {
+		
+		
 	}
 
 }

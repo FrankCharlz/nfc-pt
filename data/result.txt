@@ -1,1 +1,1 @@
-{"Uid":"bbcef10b","ReadOnly":false,"DataLength":0,"CanMakeReadOnly":true,"Formatted":false,"Records":[],"TagTech":"MifareClassic1K","MaxDataLength":716,"Exception":null}
+{"Uid":"4b4cf20b","ReadOnly":false,"DataLength":0,"CanMakeReadOnly":true,"Formatted":false,"Records":[],"TagTech":"MifareClassic1K","MaxDataLength":716,"Exception":null}
