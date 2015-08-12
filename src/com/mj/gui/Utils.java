@@ -2,7 +2,6 @@ package com.mj.gui;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -96,7 +95,6 @@ public class Utils {
 	public static String getWorkingDirectory() {
 		String path = BRT.PROJECT_DATA_FOLDER;
 
-		String ins = "COPY THE PATH BELOW AND INTEGRATE IT IN GOTOTAGS APP:"+System.lineSeparator();
 		//URL location = Utils.class.getProtectionDomain().getCodeSource().getLocation();
 
 		File file_path = new File(path);
